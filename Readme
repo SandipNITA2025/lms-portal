@@ -1,0 +1,4 @@
+const results = await prisma.$queryRaw`
+  SELECT * FROM "Course"
+  WHERE to_tsvector('english', "title") @@ to_tsquery('english', ${searchTerm});
+`;
