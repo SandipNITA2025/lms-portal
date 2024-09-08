@@ -12,20 +12,32 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const courserOwner = await db.course.findUnique({
+    const courseOwner = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId,
       },
     });
-    if (!courserOwner) {
+    if (!courseOwner) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const attachment = await db.attachment.delete({
+    // Check if the attachment exists for the given course
+    const attachment = await db.attachment.findFirst({
       where: {
         id: params.attachmentId,
         courseId: params.courseId,
+      },
+    });
+
+    if (!attachment) {
+      return new NextResponse("Attachment not found", { status: 404 });
+    }
+
+    // Now delete the attachment by id
+    await db.attachment.delete({
+      where: {
+        id: params.attachmentId,
       },
     });
 
