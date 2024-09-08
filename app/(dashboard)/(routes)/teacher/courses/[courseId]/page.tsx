@@ -91,7 +91,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             subtitle={`Complete all fields ${completionText}`}
           />
 
-          {/* TODO: actions */}
+          {/* actions */}
           <Actions
             disabled={!isComplete}
             courseId={course.id}

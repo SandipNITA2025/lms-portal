@@ -48,7 +48,7 @@ const CategoryItem = ({ value, label, icon: Icon }: CategoryItemProps) => {
       )}
     >
       {Icon && <Icon />}
-      <div className="text-sm truncate">{label}</div>
+      <span className="text-sm truncate">{label}</span>
     </button>
   );
 };

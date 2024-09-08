@@ -1,10 +1,9 @@
-// Actions.tsx
 "use client";
 import ConfirmModal from "@/components/modals/confirm-modal";
 import { Button } from "@/components/ui/button";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -64,9 +63,23 @@ const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
       </Button>
 
       <ConfirmModal onConfirm={onDelete}>
-        <Button disabled={disabled || isLoading} className="flex items-center w-full justify-center" size="sm">
-          <Trash className="h-4 w-4" />
-        </Button>
+        {/* Change the trigger to a div or span instead of Button */}
+        <div className="flex items-center justify-center">
+          <Button
+            asChild
+            disabled={disabled || isLoading}
+            size="sm"
+            variant="outline"
+          >
+            <span>
+              {isLoading ? (
+                <Loader2 className="animate-spin h-4 w-4" />
+              ) : (
+                <Trash className="h-4 w-4" />
+              )}
+            </span>
+          </Button>
+        </div>
       </ConfirmModal>
     </div>
   );

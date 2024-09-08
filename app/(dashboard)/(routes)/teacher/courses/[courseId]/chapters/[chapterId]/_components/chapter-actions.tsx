@@ -39,7 +39,8 @@ const ChapterActions = ({
         toast.success("Chapter published successfully");
       }
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Error publishing/unpublishing chapter:", error);
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
@@ -52,7 +53,8 @@ const ChapterActions = ({
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted successfully");
       router.push(`/teacher/courses/${courseId}`);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Error deleting chapter:", error);
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
@@ -62,19 +64,36 @@ const ChapterActions = ({
   return (
     <div className="flex items-center gap-x-2">
       <Button
-        className=""
         disabled={disabled || isLoading}
         onClick={onClick}
         variant={"outline"}
         size={"sm"}
       >
-        {isPublished ? "Unpublish" : "Publish"}
+        {isLoading ? (
+          <Loader2 className="animate-spin h-4 w-4" />
+        ) : isPublished ? (
+          "Unpublish"
+        ) : (
+          "Publish"
+        )}
       </Button>
 
       <ConfirmModal onConfirm={onDelete}>
+        {/* Change the trigger to a div or span instead of Button */}
         <div className="flex items-center justify-center">
-          <Button disabled={disabled || isLoading} size="sm" variant="outline">
-            <Trash className="h-4 w-4" />
+          <Button
+            asChild
+            disabled={disabled || isLoading}
+            size="sm"
+            variant="outline"
+          >
+            <span>
+              {isLoading ? (
+                <Loader2 className="animate-spin h-4 w-4" />
+              ) : (
+                <Trash className="h-4 w-4" />
+              )}
+            </span>
           </Button>
         </div>
       </ConfirmModal>

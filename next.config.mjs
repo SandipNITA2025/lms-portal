@@ -5,10 +5,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        port: "",
+        port: "", // Optional, you can leave it empty if not needed
       },
     ],
   },
+  swcMinify: true, // Enable SWC minifier
+  compress: true, // Enable gzip compression
 };
 
 export default nextConfig;

@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
