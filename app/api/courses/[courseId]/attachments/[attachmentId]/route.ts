@@ -9,8 +9,13 @@ export async function DELETE(
   try {
     const { userId } = auth();
     if (!userId) {
+      console.error("Unauthorized: No user ID found");
       return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    console.log(`User ID: ${userId}`);
+    console.log(`Course ID: ${params.courseId}`);
+    console.log(`Attachment ID: ${params.attachmentId}`);
 
     const courseOwner = await db.course.findFirst({
       where: {
@@ -19,6 +24,7 @@ export async function DELETE(
       },
     });
     if (!courseOwner) {
+      console.error("Unauthorized: User is not the owner of the course");
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -31,6 +37,7 @@ export async function DELETE(
     });
 
     if (!attachment) {
+      console.error("Attachment not found");
       return new NextResponse("Attachment not found", { status: 404 });
     }
 
@@ -43,7 +50,7 @@ export async function DELETE(
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.log("[COURSES_ID_ATTACH]", error);
+    console.error("[COURSES_ID_ATTACH]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
