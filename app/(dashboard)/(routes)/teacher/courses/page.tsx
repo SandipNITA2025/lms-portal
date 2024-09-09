@@ -24,7 +24,7 @@ const Courses = async () => {
 
   return (
     <div className="p-6">
-      <div className="container mx-auto py-10">
+      <div className="w-full mx-auto py-10">
         <DataTable columns={columns} data={courses} />
       </div>
     </div>
