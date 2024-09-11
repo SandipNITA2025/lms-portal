@@ -6,14 +6,15 @@ import { usePathname } from "next/navigation";
 
 const guestRoutes = [
   {
-    icon: Layout,
-    label: "Dashboard",
-    path: "/",
-  },
-  {
     icon: Compass,
     label: "Browse",
-    path: "/search",
+    path: "/",
+  },
+
+  {
+    icon: Layout,
+    label: "Dashboard",
+    path: "/dashboard",
   },
 ];
 
@@ -31,7 +32,7 @@ const teacherRoutes = [
 ];
 
 const SidebarRoutes: React.FC = () => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const isTeacherPage = pathname?.includes("/teacher");
   const routes = isTeacherPage ? teacherRoutes : guestRoutes;
   return (

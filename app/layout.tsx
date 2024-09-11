@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import ToasterProvider from "@/components/provider/toaster-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ConfettiProvider } from "@/components/provider/confetti-provider";
+import TopLoader from "@/components/top-loader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={inter.className}
-        >
+        <body className={inter.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -32,6 +31,7 @@ export default function RootLayout({
           >
             <ConfettiProvider />
             <ToasterProvider />
+            <TopLoader />
             {children}
           </ThemeProvider>
         </body>
