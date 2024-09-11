@@ -9,19 +9,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// TEACHER MODEL:
-model Teacher {
-  id       String   @id @default(cuid())
-  name     String
-  email    String   @unique
-  bio      String?  @db.Text
-  imageUrl String?  @db.Text
-  courses  Course[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // COURSE MODEL:
 model Course {
   id          String  @id @default(cuid())
@@ -34,9 +21,6 @@ model Course {
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
-
-  teacherId String? // Made optional
-  teacher   Teacher? @relation(fields: [teacherId], references: [id], onDelete: Cascade) // Optional relation
 
   chapters    Chapter[]
   attachments Attachment[]
