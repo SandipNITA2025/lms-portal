@@ -8,7 +8,7 @@ const HomeButtons = () => {
         <Button>Explore Courses</Button>
       </Link>
       <Link href="/dashboard">
-        <Button variant="outline">Dashboard</Button>
+        <Button className="outline-gray-100" variant="outline">Dashboard</Button>
       </Link>
     </div>
   );
