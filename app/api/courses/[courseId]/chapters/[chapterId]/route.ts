@@ -57,11 +57,19 @@ export async function DELETE(
       });
 
       if (existingMuxData) {
-        await Video.assets.delete(existingMuxData.assestId);
+        // Check if this Mux asset is only used by this chapter
+        const assetUsage = await db.muxData.count({
+          where: { assestId: existingMuxData.assestId },
+        });
+
+        if (assetUsage === 1) {
+          // Delete the Mux asset if no other chapter is using it
+          await Video.assets.delete(existingMuxData.assestId);
+        }
+
+        // Delete the Mux data record from the database
         await db.muxData.delete({ where: { id: existingMuxData.id } });
       }
-
-      // TODO: Add code to delete video assets from cloud storage if applicable
     }
 
     // Delete the chapter from the database
@@ -130,7 +138,7 @@ export async function PATCH(
       },
     });
 
-    // Upload video if videoUrl is provided
+    // Check if new video URL is provided
     if (values.videoUrl) {
       const existingMuxData = await db.muxData.findFirst({
         where: {
@@ -138,9 +146,19 @@ export async function PATCH(
         },
       });
 
+      // If chapter already has a video, delete the old video and replace with the new one
       if (existingMuxData) {
-        await Video.assets.delete(existingMuxData.assestId);
+        // Ensure that this asset is only used by this chapter before deleting
+        const assetUsage = await db.muxData.count({
+          where: { assestId: existingMuxData.assestId },
+        });
 
+        if (assetUsage === 1) {
+          // If the asset is only used by this chapter, delete it from Mux
+          await Video.assets.delete(existingMuxData.assestId);
+        }
+
+        // Delete the Mux data from the database
         await db.muxData.delete({
           where: {
             id: existingMuxData.id,
@@ -148,16 +166,18 @@ export async function PATCH(
         });
       }
 
+      // Create a new asset on Mux with the new video URL
       const asset = await Video.assets.create({
         input: values.videoUrl,
         playback_policy: ["public"],
         test: false,
       });
 
-      // Check if playback_ids exists and is an array
+      // Ensure playbackId exists before proceeding
       const playbackId = asset.playback_ids?.[0]?.id;
 
       if (playbackId) {
+        // Store the new Mux asset information in the database
         await db.muxData.create({
           data: {
             assestId: asset.id,

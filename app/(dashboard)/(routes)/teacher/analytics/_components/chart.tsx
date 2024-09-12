@@ -20,7 +20,7 @@ interface ChartProps {
   }[];
 }
 
-const Chart = ({ data }: ChartProps) => {
+const Chart = ({ data = [] }: ChartProps) => {
   return (
     <Card>
       <ResponsiveContainer width="100%" height={350}>
