@@ -8,7 +8,7 @@ const guestRoutes = [
   {
     icon: Compass,
     label: "Browse",
-    path: "/",
+    path: "/search",
   },
 
   {

@@ -1,12 +1,10 @@
 "use client";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useSession } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, Moon, Sun } from "lucide-react";
 import Link from "next/link";
-
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
@@ -18,32 +16,38 @@ import SearchInput from "./search-input";
 
 const NavbarRoutes = () => {
   const pathname = usePathname();
-
   const { setTheme } = useTheme();
+  const { session } = useSession();
 
   const isTeacherPage = pathname?.startsWith("/teacher");
   const isCoursePage = pathname?.includes("/courses");
-  const isSearchPage = pathname === "/";
+  const isSearchPage = pathname?.includes("/search");
+  const isHomePage = pathname === "/";
 
   return (
     <>
-    {
-      isSearchPage && <div className="hidden md:block">
-        <SearchInput />
-      </div>
-    }
-      <div className="flex gap-x-2 ml-auto z-10 ">
-        {isTeacherPage || isCoursePage ? (
-          <Link href="/">
-            <Button size={"sm"} variant={"ghost"}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Exit
-            </Button>
-          </Link>
-        ) : (
-          <Link href="/teacher/courses">
-            <Button size={"sm"}>Teacher mode</Button>
-          </Link>
+      {isSearchPage && (
+        <div className="hidden md:block">
+          <SearchInput />
+        </div>
+      )}
+
+      <div className="flex gap-x-2 ml-auto z-10">
+        {!isHomePage && (
+          <>
+            {isTeacherPage || isCoursePage ? (
+              <Link href="/">
+                <Button size="sm" variant="ghost">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Exit
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/teacher/courses">
+                <Button size="sm">Teacher mode</Button>
+              </Link>
+            )}
+          </>
         )}
 
         <DropdownMenu>
@@ -66,7 +70,20 @@ const NavbarRoutes = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <UserButton />
+
+        {isHomePage ? (
+          <>
+            {session ? (
+              <UserButton />
+            ) : (
+              <Link href="/sign-in">
+                <Button size="sm">Sign in</Button>
+              </Link>
+            )}
+          </>
+        ) : (
+          <UserButton />
+        )}
       </div>
     </>
   );

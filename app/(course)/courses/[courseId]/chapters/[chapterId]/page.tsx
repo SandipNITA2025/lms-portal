@@ -31,7 +31,7 @@ const ChapterIdPage = async ({
   } = await getChapter({ userId, ...params });
 
   if (!chapter || !course) {
-    redirect("/");
+    redirect("/search");
   }
 
   const isLocked = !chapter.isFree && !purchase;
