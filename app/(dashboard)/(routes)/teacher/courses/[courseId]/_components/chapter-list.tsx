@@ -81,7 +81,7 @@ const ChapterList: React.FC<ChapterListProps> = ({
                     >
                       <Grip className="h-5 w-5" />
                     </div>
-                    {chapter.title}
+                   <span title={chapter.title}  className="line-clamp-1">{chapter.title}</span>
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       {chapter.isFree && (
                         <Badge className="text-slate-200 dark:text-slate-700">Free</Badge>

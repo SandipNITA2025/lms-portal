@@ -35,7 +35,7 @@ const CourseSidebarItem = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex items-center gap-x-2 text-slate-500 dark:text-slate-400 text-sm font-medium pl-6 py-2 transition-all relative",
+        "flex items-center gap-x-2 text-slate-500 dark:text-slate-400 text-sm font-medium pl-6 py-3 transition-all relative",
         "hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200/20 dark:hover:bg-slate-700/20",
         isActive &&
           "text-slate-700 dark:text-slate-300 bg-sky-200/40 dark:bg-sky-700/40",
@@ -43,9 +43,9 @@ const CourseSidebarItem = ({
         isCompleted && isActive && "bg-emerald-200/20 dark:bg-emerald-700/20",
       )}
     >
-      <div className="flex items-center gap-x-2">
-        <Icon size={18} />
-        <span>{title}</span>
+      <div className="flex items-start gap-x-2 text-start">
+        <Icon className="min-w-4 max-w-4" />
+        <span className=" line-clamp-2">{title}</span>
       </div>
     </button>
   );

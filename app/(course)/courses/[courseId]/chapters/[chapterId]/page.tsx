@@ -49,7 +49,7 @@ const ChapterIdPage = async ({
         />
       )}
 
-      <div className="flex flex-col max-w-6xl mx-auto pb-20">
+      <div className="flex flex-col max-w-5xl mx-auto pb-20">
         <div className="p-4">
           <VideoPlayer
             chapterId={params.chapterId}

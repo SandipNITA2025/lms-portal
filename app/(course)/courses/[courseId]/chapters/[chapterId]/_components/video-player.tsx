@@ -67,7 +67,7 @@ const VideoPlayer = ({
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-800 dark:bg-slate-700 flex-col gap-y-2">
           <Lock className="h-8 w-8 text-slate-300" />
-          <p className="text-sm">This video is locked.</p>
+          <p className="text-sm text-slate-300">This video is locked.</p>
         </div>
       )}
 
