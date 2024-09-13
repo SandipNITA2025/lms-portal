@@ -5,19 +5,15 @@ type PurchaseWithCourse = Purchase & {
   course: Course;
 };
 
-const groupedByCourse = (purchases: PurchaseWithCourse[]) => {
-  const grouped: { [courseTitle: string]: { total: number; count: number } } =
-    {};
+const groupByCourse = (purchases: PurchaseWithCourse[]) => {
+  const grouped: { [courseTitle: string]: number } = {};
 
   purchases.forEach((purchase) => {
     const courseTitle = purchase.course.title;
     if (!grouped[courseTitle]) {
-      grouped[courseTitle] = { total: 0, count: 0 };
+      grouped[courseTitle] = 0;
     }
-    // Ensure price is a number and not null or undefined
-    const price = purchase.course.price ?? 0;
-    grouped[courseTitle].total += price;
-    grouped[courseTitle].count += 1;
+    grouped[courseTitle] += purchase.course.price!;
   });
 
   return grouped;
@@ -25,39 +21,35 @@ const groupedByCourse = (purchases: PurchaseWithCourse[]) => {
 
 export const getAnalytics = async (userId: string) => {
   try {
-    // Find all courses created by the user
-    const userCourses = await db.course.findMany({
-      where: { userId },
-      select: { id: true },
-    });
-
-    const userCourseIds = userCourses.map((course) => course.id);
-
-    // Find all purchases made by the user and filter by the courses they created
     const purchases = await db.purchase.findMany({
       where: {
-        userId,
-        courseId: { in: userCourseIds },
+        course: {
+          userId: userId,
+        },
       },
-      include: { course: true },
+      include: {
+        course: true,
+      },
     });
 
-    const grouped = groupedByCourse(purchases);
-
-    const data = Object.entries(grouped).map(
-      ([courseTitle, { total, count }]) => ({
+    const groupedEarnings = groupByCourse(purchases);
+    const data = Object.entries(groupedEarnings).map(
+      ([courseTitle, total]) => ({
         name: courseTitle,
         total: total,
-        sales: count, // Count of purchases for each course
       })
     );
 
-    const totalRevenue = data.reduce((acc, { total }) => acc + total, 0);
-    const totalSales = data.reduce((acc, { sales }) => acc + sales, 0);
+    const totalRevenue = data.reduce((acc, curr) => acc + curr.total, 0);
+    const totalSales = purchases.length;
 
-    return { data, totalRevenue, totalSales };
+    return {
+      data,
+      totalRevenue,
+      totalSales,
+    };
   } catch (error) {
-    console.log("[GET-ANALYTICS]", error);
+    console.log("[GET_ANALYTICS]", error);
     return {
       data: [],
       totalRevenue: 0,
