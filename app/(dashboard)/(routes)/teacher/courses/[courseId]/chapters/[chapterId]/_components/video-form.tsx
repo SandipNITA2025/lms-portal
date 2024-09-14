@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import { Pencil, PlusCircle, Video } from "lucide-react";
 import { Chapter, MuxData } from "@prisma/client";
 import MuxPlayer from "@mux/mux-player-react";
+import { CldVideoPlayer } from "next-cloudinary";
+import "next-cloudinary/dist/cld-video-player.css";
 import { FileUpload } from "@/components/file-upload";
 
 interface VideoFormProps {
@@ -78,7 +80,11 @@ const VideoForm = ({ initialData, courseId, chapterId }: VideoFormProps) => {
           </div>
         ) : (
           <div className="relative aspect-video mt-2">
-            <MuxPlayer playbackId={initialData.muxData?.playbackId} />
+            <CldVideoPlayer
+              src={initialData.muxData?.playbackId!}
+              sourceTypes={["hls", "dash"]}
+              transformation={{ streaming_profile: "full_hd" }}
+            />
           </div>
         ))}
 
