@@ -11,6 +11,7 @@ import AccessFrom from "./_components/access-form";
 import VideoForm from "./_components/video-form";
 import Banner from "@/components/banner";
 import ChapterActions from "./_components/chapter-actions";
+import BackButton from "./_components/back-button";
 
 const ChapterIdPage = async ({
   params,
@@ -62,13 +63,14 @@ const ChapterIdPage = async ({
       <div className="p-6">
         <div className="flex items-center justify-between w-full">
           <div className="w-full">
-            <Link
+            {/* <Link
               href={`/teacher/courses/${params.courseId}`}
               className="flex items-center text-sm hover:opacity-75 transition mb-6"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to course setup
-            </Link>
+            </Link> */}
+            <BackButton />
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h1 className="text-2xl font-medium">Chapter Creation</h1>
